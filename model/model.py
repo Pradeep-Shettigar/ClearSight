@@ -25,10 +25,6 @@ def load_model():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = build_model().to(device)
 
-    model.load_state_dict(torch.load(
-        r"C:\ClearSight\weights\brain_tumor_effnetb0.pth",
-        map_location=device
-    ))
-
+    model.load_state_dict(torch.load("weights/brain_tumor_effnetb0.pth", map_location=device))
     model.eval()
     return model, device
