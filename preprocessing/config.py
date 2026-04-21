@@ -1,3 +1,7 @@
+# ClearSight Project
+# Licensed under Apache License 2.0
+# Author: Pradeep-Shettigar
+
 from torchvision import transforms
 transform = transforms.Compose([
     transforms.Resize((224, 224)),

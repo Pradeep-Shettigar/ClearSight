@@ -1,3 +1,7 @@
+# ClearSight Project
+# Licensed under Apache License 2.0
+# Author: Pradeep-Shettigar
+
 import torch
 import torch.nn as nn
 from PIL import Image

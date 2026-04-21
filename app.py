@@ -1,3 +1,7 @@
+# ClearSight Project
+# Licensed under Apache License 2.0
+# Author: Pradeep-Shettigar
+
 import streamlit as st
 import torch
 from utils.heatmap import generate_heatmap
