@@ -73,7 +73,7 @@ st.sidebar.markdown("""
     <h2 style="margin:0;">Clear Sight</h2>
 </div>
 """.format(
-    base64.b64encode(open(r"C:\ClearSightRaw\Software\FrontEnd\logo.png", "rb").read()).decode()
+    base64.b64encode(open("logo.png", "rb").read()).decode()
 ), unsafe_allow_html=True)
 
 def nav(label):
