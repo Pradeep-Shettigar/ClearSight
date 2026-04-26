@@ -1,164 +1,99 @@
-# ClearSight Project
-# Licensed under Apache License 2.0
-# Author: Pradeep-Shettigar
-
 import streamlit as st
-import torch
 from utils.heatmap import generate_heatmap
 from utils.predictor import predict_image
 from preprocessing.config import class_names
 from model.model import load_model
-#gpt code just for testing
-from streamlit_option_menu import option_menu
+from appUtils.home import homepg
+from appUtils.upload import uploadpg
+from appUtils.about import aboutpg
+import os
+import base64
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+logo_path = os.path.join(BASE_DIR, "logo.png")
+
+with open(logo_path, "rb") as f:
+    encoded = base64.b64encode(f.read()).decode()
+
+st.set_page_config(page_title="Clear Sight", layout="wide")
+
 st.markdown("""
 <style>
-/* Page background */
-.stApp {
-    background: radial-gradient(circle at top, #111827, #020617);
-    color: white;
+
+section[data-testid="stSidebar"] {
+    width: 280px !important;
+    background: linear-gradient(180deg, #0f172a, #1e293b, #020617);
 }
 
-
-/* Title */
-.main-title {
-    text-align: center;
-    font-size: 42px;
-    font-weight: bold;
-    margin-bottom: 5px;
+section[data-testid="stSidebar"] h1 {
+    font-size: 34px !important;
+    font-weight: 900 !important;
+    background: linear-gradient(90deg, #3b82f6, #06b6d4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-/* Subtitle */
-.sub-title {
-    text-align: center;
-    color: #b0b3b8;
-    margin-bottom: 30px;
-}
-
-/* Upload box */
-.upload-box {
-    border: 2px dashed #4da3ff;
-    border-radius: 18px;
-    padding: 40px;
-    text-align: center;
-    background: rgba(255,255,255,0.03);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 0 20px rgba(77,163,255,0.25);
-}
-
-
-
-/* Buttons */
-.stButton > button {
-    background: linear-gradient(90deg, #232caa, #00e5ff, #04225f);
-    color: black;
-    font-size: 16px;
+section[data-testid="stSidebar"] .stButton > button {
+    width: 100%;
+    text-align: left;
+    padding: 12px 15px;
     border-radius: 12px;
-    padding: 10px 25px;
+    margin-bottom: 10px;
+    background: rgba(255,255,255,0.05);
+    color: white;
     border: none;
-    font-weight: bold;
-}
-}
-.stButton > button {
-    cursor: pointer;
-    transition: all 0.25s ease;
+    transition: all 0.3s ease;
 }
 
-
-.stButton > button:hover {
-    transform: scale(1.05);
-    transition: 0.2s;
+section[data-testid="stSidebar"] .stButton > button:hover {
+    background: linear-gradient(90deg, #2563eb, #06b6d4);
+    transform: translateX(5px) scale(1.02);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
 }
 
-/* Center everything */
-.center {
-    display: flex;
-    justify-content: center;
+section[data-testid="stSidebar"] .stButton > button:focus {
+    background: linear-gradient(90deg, #3b82f6, #06b6d4);
+    color: white;
+    box-shadow: 0 0 15px rgba(59,130,246,0.6);
 }
+
+* {
+    transition: all 0.2s ease-in-out;
+}
+
 </style>
 """, unsafe_allow_html=True)
-selected = option_menu(
-        menu_title=None,
-        options=["Home", "Upload", "About"],
-        icons=["house", "cloud-upload", "info-circle"],
-        menu_icon="cast",
-        default_index=0,
-        orientation="horizontal",
-    )
+
+if "page" not in st.session_state:
+    st.session_state.page = "🏠 Home"
+
+st.sidebar.markdown("""
+<div style="display:flex; align-items:center; gap:10px;">
+    <img src="data:image/png;base64,{}" width="40">
+    <h2 style="margin:0;">Clear Sight</h2>
+</div>
+""".format(
+    base64.b64encode(open(r"C:\ClearSightRaw\Software\FrontEnd\logo.png", "rb").read()).decode()
+), unsafe_allow_html=True)
+
+def nav(label):
+    if st.sidebar.button(label, use_container_width=True):
+        st.session_state.page = label
+
+nav("🏠 Home")
+nav("📤 Upload")
+nav("ℹ️ About")
 
 
-st.title("Brain tumor detector and clasifire")
+page = st.session_state.page
 
-
+if page == "🏠 Home":
     
-if selected == "Home":
-    st.markdown(
-        "<h1 style='color:#00b4d8; text-align:center;'>Welcome to the CLEAR SIGHT application!</h1>",
-        unsafe_allow_html=True
-    )
-
-    left, center, right = st.columns([1,2,1])
-
-    with center:
-        st.markdown("""
-        <div class="upload-box">
-            <h2 style="color:#00b4d8;">What is CLEAR SIGHT?</h2>
-            <p>
-            ClearSight is an ML-powered tool designed to assist doctors in detecting brain tumors 
-            from MRI scans quickly and accurately using MRI images.
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
-
-        st.write("")
-
-        st.markdown("""
-        <div class="upload-box">
-            <h2 style="color:#00b4d8;">How to Use CLEAR SIGHT</h2>
-            <ol>
-                <li>Go to the Upload tab</li>
-                <li>Upload an MRI scan (JPG / PNG)</li>
-                <li>Click Predict to analyze</li>
-            </ol>
-        </div>
-        """, unsafe_allow_html=True)
-
-if selected == "Upload":
-
-   st.markdown('<div class="main-title">Upload MRI Scan</div>', unsafe_allow_html=True)
-   st.markdown('<div class="sub-title">Upload an MRI image for brain tumor detection</div>', unsafe_allow_html=True)
-
-   st.markdown('<div class="upload-box">', unsafe_allow_html=True)
-   model, device = load_model()
-
-   uploaded_file = st.file_uploader("Upload MRI Image", type=["jpg", "jpeg", "png"])
-   label_visibility="collapsed"
-
-   st.markdown('</div>', unsafe_allow_html=True)
-
-   st.write(" ")  # spacing
-
-
-
-
-   if st.button("Predict"):
-        predicted_class, confidence, probs = predict_image(uploaded_file, model, device)
-
-        st.subheader("Prediction Result")
-        st.write(f"Tumor Type: **{predicted_class.upper()}**")
-        st.write(f"Confidence: **{confidence:.2f}**")
+    homepg();
         
-        st.bar_chart(probs)
 
+elif page == "📤 Upload":
+    uploadpg();
 
-
-   if st.button("Heatmap"):
-        predicted_class, _, probs = predict_image(uploaded_file, model, device)
-        class_index = class_names.index(predicted_class)
-
-        orig, heat = generate_heatmap(uploaded_file, model, device, class_index)
-
-        st.image(heat, caption="Grad-CAM Heatmap", use_container_width=True)
-            
-if selected == "About":
-    st.title("About Page")
-    st.write("Welcome to the About Page!")
+elif page == "ℹ️ About":
+    aboutpg();
