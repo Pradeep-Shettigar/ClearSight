@@ -4,6 +4,31 @@ from utils.predictor import predict_image
 from preprocessing.config import class_names
 from model.model import load_model
 def uploadpg():
+    st.markdown("""
+    <style>
+    [data-testid="stFileUploader"] {
+    background: transparent;
+    border: none;
+    padding: 0;
+    }
+
+    /* Main upload area */
+    [data-testid="stFileUploaderDropzone"] {
+        border: 2px dashed #00C9A7;
+        border-radius: 20px;
+        padding: 50px;
+        background: rgba(255,255,255,0.04);
+        text-align: center;
+        transition: 0.3s;
+    }
+
+    /* Hover effect */
+    [data-testid="stFileUploaderDropzone"]:hover {
+        border-color: #4facfe;
+        background: rgba(255,255,255,0.08);
+    }
+    </style>
+    """, unsafe_allow_html=True)
     st.markdown("### 📥 Upload & Analyze MRI")
 
     with st.expander("⬇️ Click to Upload MRI Image", expanded=True):
