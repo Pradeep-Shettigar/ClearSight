@@ -9,11 +9,8 @@ from appUtils.about import aboutpg
 import os
 import base64
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-logo_path = os.path.join(BASE_DIR, "logo.png")
 
-with open(logo_path, "rb") as f:
-    encoded = base64.b64encode(f.read()).decode()
+
 
 st.set_page_config(page_title="Clear Sight", layout="wide")
 
@@ -72,9 +69,7 @@ st.sidebar.markdown("""
     <img src="data:image/png;base64,{}" width="40">
     <h2 style="margin:0;">Clear Sight</h2>
 </div>
-""".format(
-    base64.b64encode(open("logo.png", "rb").read()).decode()
-), unsafe_allow_html=True)
+""". unsafe_allow_html=True)
 
 def nav(label):
     if st.sidebar.button(label, use_container_width=True):
