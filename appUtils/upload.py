@@ -15,13 +15,7 @@ def uploadpg():
         )
 
         if uploaded_file:
-            allowed_types = ["image/jpg", "image/jpeg", "image/png"]
-
-            if uploaded_file.type not in allowed_types:
-                st.error("Unsupported file type. Please upload (JPG, JPEG, PNG only)")
-                uploaded_file = None
-
-        st.image(uploaded_file, caption="MRI Preview", use_container_width=True)
+            st.image(uploaded_file, caption="MRI Preview", use_container_width=True)
 
     if "model" not in st.session_state:
         st.session_state.model, st.session_state.device = load_model()
