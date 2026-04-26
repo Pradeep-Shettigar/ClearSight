@@ -1,19 +1,11 @@
 import streamlit as st
-from utils.heatmap import generate_heatmap
-from utils.predictor import predict_image
-from preprocessing.config import class_names
-from model.model import load_model
 from appUtils.home import homepg
 from appUtils.upload import uploadpg
 from appUtils.about import aboutpg
-import os
-import base64
-
-
-
 
 st.set_page_config(page_title="Clear Sight", layout="wide")
 
+# Sidebar styling
 st.markdown("""
 <style>
 
@@ -61,34 +53,31 @@ section[data-testid="stSidebar"] .stButton > button:focus {
 </style>
 """, unsafe_allow_html=True)
 
+# Default page
 if "page" not in st.session_state:
     st.session_state.page = "🏠 Home"
 
-st.sidebar.markdown("""
-<div style="display:flex; align-items:center; gap:10px;">
-    <img src="data:image/png;base64,{}" width="40">
-    <h2 style="margin:0;">Clear Sight</h2>
-</div>
-""". unsafe_allow_html=True)
+# Sidebar title (no logo now)
+st.sidebar.markdown("## 🧠 Clear Sight")
 
+# Navigation function
 def nav(label):
     if st.sidebar.button(label, use_container_width=True):
         st.session_state.page = label
 
+# Navigation buttons
 nav("🏠 Home")
 nav("📤 Upload")
 nav("ℹ️ About")
 
-
+# Page routing
 page = st.session_state.page
 
 if page == "🏠 Home":
-    
-    homepg();
-        
+    homepg()
 
 elif page == "📤 Upload":
-    uploadpg();
+    uploadpg()
 
 elif page == "ℹ️ About":
-    aboutpg();
+    aboutpg()
