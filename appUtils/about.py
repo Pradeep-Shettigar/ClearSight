@@ -93,7 +93,7 @@ def aboutpg():
     st.markdown("""
     <div class="section">
     <h3>👤 Author</h3>
-    <p><b>Prakyath K Pujari</b></p>
+    <p><b>Prakyath K Poojary</b></p>
     <p><b>Nishanth VS</b></p>
     <p><b>Bharath raj</b></p>
     <p><b>Pradeep Shettigar</b></p>

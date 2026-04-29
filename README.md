@@ -128,6 +128,10 @@ No code has been directly copied from other repositories.
 
 ## 👤 Author
 
-**Pradeep-Shettigar**
+
+    **Prakyath K Poojary**
+    **Nishanth VS**
+    **Bharath raj**
+    **Pradeep Shettigar**
 
 ---
